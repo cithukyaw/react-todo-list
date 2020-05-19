@@ -8,7 +8,7 @@ class TodoList extends Component {
     super(props);
 
     this.state = {
-      todos: [],
+      todos: JSON.parse(window.localStorage.getItem('todos') || '[]'),
     };
 
     this.create = this.create.bind(this);
@@ -18,9 +18,7 @@ class TodoList extends Component {
   }
 
   create(newTodo) {
-    this.setState({
-      todos: [...this.state.todos, newTodo]
-    });
+    this.updateLocalStorage([...this.state.todos, newTodo]);
   }
 
   update(id, updatedTask) {
@@ -32,13 +30,11 @@ class TodoList extends Component {
       return todo;
     });
 
-    this.setState({ todos: updatedTodos });
+    this.updateLocalStorage(updatedTodos);
   }
 
   remove(id) {
-    this.setState({
-      todos: this.state.todos.filter(todo => todo.id !== id)
-    });
+    this.updateLocalStorage(this.state.todos.filter(todo => todo.id !== id));
   }
 
   toggleCompletion(id) {
@@ -50,7 +46,16 @@ class TodoList extends Component {
       return todo;
     });
 
-    this.setState({ todos: updatedTodos });
+    this.updateLocalStorage(updatedTodos);
+  }
+
+  updateLocalStorage(updatedTodos) {
+    this.setState(
+      st => ({
+        todos: updatedTodos
+      }),
+      () => window.localStorage.setItem('todos', JSON.stringify(this.state.todos))
+    );
   }
 
   render() {
