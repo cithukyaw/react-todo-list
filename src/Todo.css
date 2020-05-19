@@ -7,6 +7,11 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
+.Todo-task {
+    cursor: pointer;
+    width: 100%;
+}
+
 .Todo-task.completed {
     color: lightgray;
     text-decoration: line-through;
